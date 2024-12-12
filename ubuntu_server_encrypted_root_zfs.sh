@@ -41,24 +41,24 @@ set -euo pipefail
 ubuntuver="noble" #Ubuntu release to install. "jammy" (22.04). "noble" (24.04).
 distro_variant="server" #Ubuntu variant to install. "server" (Ubuntu server; cli only.) "desktop" (Default Ubuntu desktop install). "kubuntu" (KDE plasma desktop variant). "xubuntu" (Xfce desktop variant). "budgie" (Budgie desktop variant). "MATE" (MATE desktop variant).
 user="testuser" #Username for new install.
-PASSWORD="testuser" #Password for user in new install.
-hostname="ubuntu" #Name to identify the main system on the network. An underscore is DNS non-compliant.
-zfs_root_password="testtest" #Password for encrypted root pool. Minimum 8 characters. "" for no password encrypted protection. Unlocking root pool also unlocks data pool, unless the root pool has no password protection, then a separate data pool password can be set below.
+PASSWORD="123" #Password for user in new install.
+hostname="nuc05" #Name to identify the main system on the network. An underscore is DNS non-compliant.
+zfs_root_password="" #Password for encrypted root pool. Minimum 8 characters. "" for no password encrypted protection. Unlocking root pool also unlocks data pool, unless the root pool has no password protection, then a separate data pool password can be set below.
 zfs_root_encrypt="native" #Encryption type. "native" for native zfs encryption. "luks" for luks. Required if there is a root pool password, otherwise ignored.
 locale="en_GB.UTF-8" #New install language setting.
-timezone="Europe/London" #New install timezone setting.
+timezone="Europe/Tallinn" #New install timezone setting.
 zfs_rpool_ashift="12" #Drive setting for zfs pool. ashift=9 means 512B sectors (used by all ancient drives), ashift=12 means 4KiB sectors (used by most modern hard drives), and ashift=13 means 8KiB sectors (used by some modern SSDs).
 mirror_archive="" #"" to use the default ubuntu repository. Set to an ISO 3166-1 alpha-2 country code to use a country mirror archive, e.g. "GB". A speed test is run and the fastest archive is selected. Country codes: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
 RPOOL="rpool" #Root pool name.
-topology_root="single" #"single", "mirror", "raid0", "raidz1", "raidz2", or "raidz3" topology on root pool.
-disks_root="1" #Number of disks in array for root pool. Not used with single topology.
-EFI_boot_size="512" #EFI boot loader partition size in mebibytes (MiB).
+topology_root="mirror" #"single", "mirror", "raid0", "raidz1", "raidz2", or "raidz3" topology on root pool.
+disks_root="2" #Number of disks in array for root pool. Not used with single topology.
+EFI_boot_size="1024" #EFI boot loader partition size in mebibytes (MiB).
 swap_size="500" #Swap partition size in mebibytes (MiB). Size of swap will be larger than defined here with Raidz topologies.
 datapool="datapool" #Non-root drive data pool name.
 topology_data="single" #"single", "mirror", "raid0", "raidz1", "raidz2", or "raidz3" topology on data pool.
-disks_data="1" #Number of disks in array for data pool. Not used with single topology.
-zfs_data_password="testtest" #If no root pool password is set, a data pool password can be set here. Minimum 8 characters. "" for no password protection.
+disks_data="0" #Number of disks in array for data pool. Not used with single topology.
+zfs_data_password="" #If no root pool password is set, a data pool password can be set here. Minimum 8 characters. "" for no password protection.
 zfs_data_encrypt="native" #Encryption type. "native" for native zfs encryption. "luks" for luks. Required if there is a data pool password, otherwise ignored.
 datapoolmount="/mnt/$datapool" #Non-root drive data pool mount point in new install.
 zfs_dpool_ashift="12" #See notes for rpool ashift. If ashift is set too low, a significant read/write penalty is incurred. Virtually no penalty if set higher.
@@ -68,7 +68,7 @@ remoteaccess_first_boot="no" #"yes" to enable remoteaccess during first boot. Re
 timeout_rEFInd="3" #Timeout in seconds for rEFInd boot screen until default choice selected.
 timeout_zbm_no_remote_access="3" #Timeout in seconds for zfsbootmenu when no remote access enabled.
 timeout_zbm_remote_access="45" #Timeout in seconds for zfsbootmenu when remote access enabled. The password prompt for an encrypted root pool with allow an indefinite time to connect. An unencrypted root pool will boot the system when the timer runs out, preventing remote access.
-quiet_boot="yes" #Set to "no" to show boot sequence.
+quiet_boot="no" #Set to "no" to show boot sequence.
 ethprefix="e" #First letter of ethernet interface. Used to identify ethernet interface to setup networking in new install.
 install_log="ubuntu_setup_zfs_root.log" #Installation log filename.
 log_loc="/var/log" #Installation log location.
@@ -78,7 +78,7 @@ remoteaccess_ip_config="dhcp" #"dhcp", "dhcp,dhcp6", "dhcp6", or "static". Autom
 remoteaccess_ip="192.168.0.222" #Remote access static IP address to connect to ZFSBootMenu. Not used for automatic IP configuration.
 remoteaccess_netmask="255.255.255.0" #Remote access subnet mask. Not used for "dhcp" automatic IP configuration.
 ubuntu_original="http://archive.ubuntu.com/ubuntu" #Default ubuntu repository.
-install_warning_level="PRIORITY=critical" #"PRIORITY=critical", or "FRONTEND=noninteractive". Pause install to show critical messages only or do not pause (noninteractive). Script still pauses for keyboard selection at the end.
+install_wardning_level="PRIORITY=critical" #"PRIORITY=critical", or "FRONTEND=noninteractive". Pause install to show critical messages only or do not pause (noninteractive). Script still pauses for keyboard selection at the end.
 extra_programs="no" #"yes", or "no". Install additional programs if not included in the ubuntu distro package. Programs: cifs-utils, locate, man-db, openssh-server, tldr.
 
 ##Check for root priviliges
